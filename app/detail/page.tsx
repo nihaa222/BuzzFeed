@@ -58,7 +58,7 @@ function Page() {
               <Link href={`/detail/${newData.id}?id=${newData.id}`}>
                 <Image
                   alt="image"
-                  src={newData.urlToImage || null}
+                  src={newData.urlToImage}
                   className="w-full h-auto rounded-md"
                   width={500}
                   height={300}
