@@ -34,11 +34,13 @@ const NewsPage: React.FC<NewsPageProps> = async ({ params }) => {
         Source: {finalData.source.name}
       </p>
       <div className="flex justify-center p-3">
-        <img
-          className="w-full rounded-md md:w-2/3 xl:w-1/3 h-64 "
-          src={finalData.urlToImage}
-          alt="urlImage"
-        ></img>
+        <Image
+          className="w-full rounded-md md:w-2/3 xl:w-1/3 h-64"
+          src={finalData?.urlToImage || "/path/to/placeholder-image.jpg"} // Fallback to placeholder if the image URL is invalid
+          alt={finalData?.title || "Image not available"} // Use title or a default alt text
+          width={500} // Define the width for the image
+          height={300} // Define the height for the image
+        />
       </div>
       <p className="text-start w-full md:w-2/3 xl:w-1/3 mx-auto">
         {finalData.description}

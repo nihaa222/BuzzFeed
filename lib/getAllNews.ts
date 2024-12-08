@@ -9,6 +9,24 @@ interface Article {
   title: string;
   id: number;
 }
+
+function isValidImageUrl(url: string): boolean {
+  return /\.(jpg|jpeg|png|gif|bmp|webp)$/i.test(url);
+}
+
+async function isImageValid(url: string): Promise<boolean> {
+  try {
+    const res = await fetch(url, { method: "HEAD" }); // Use HEAD request to avoid downloading the entire image
+    const contentType = res.headers.get("Content-Type");
+    // Check if the Content-Type header is an image type (e.g., image/jpeg, image/png)
+    return contentType && contentType.startsWith("image/");
+  } catch (error) {
+    console.error("Error fetching image:", error);
+    return false;
+  }
+}
+
+// Function to fetch and filter the news
 export default async function getAllNews() {
   try {
     const res = await fetch(
@@ -16,17 +34,35 @@ export default async function getAllNews() {
     );
 
     const newData = await res.json();
-    const selectedData = newData.articles.filter(
-      (data: Article) =>
-        data.description !== null &&
-        data.description !== "[Removed]" &&
-        data.content !== null &&
-        data.content
+
+    // Filter articles to exclude those with invalid image URLs
+    const selectedData = await Promise.all(
+      newData.articles.map(async (data: Article) => {
+        const isValidImage =
+          isValidImageUrl(data.urlToImage) &&
+          (await isImageValid(data.urlToImage));
+
+        if (
+          data.description !== null &&
+          data.description !== "[Removed]" &&
+          data.content !== null &&
+          data.content !== "" &&
+          isValidImage
+        ) {
+          return data;
+        }
+        return null; // Return null for invalid articles
+      })
     );
-    const updatedData = selectedData.map((item: Article, index: number) => {
-      item.id = index + 1;
-      return item;
-    });
+
+    // Remove null values from the array and assign IDs
+    const updatedData = selectedData
+      .filter((item) => item !== null)
+      .map((item, index) => {
+        item.id = index + 1;
+        return item;
+      });
+
     return updatedData;
   } catch (error) {
     console.error("Error fetching data:", error);

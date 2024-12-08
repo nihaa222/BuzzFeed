@@ -80,7 +80,11 @@ const Search: React.FC<ApiSearch> = ({ api }) => {
         />
 
         <button type="submit" className="absolute h-6 w-6 top-[10px] right-2">
-          <Image alt="search" src={pinksearch} className="h-full w-full" />
+          <Image
+            alt="search"
+            src={pinksearch || null}
+            className="h-full w-full"
+          />
         </button>
       </form>
 

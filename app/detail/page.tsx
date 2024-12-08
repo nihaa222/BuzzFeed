@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 interface Article {
@@ -55,10 +56,14 @@ function Page() {
           {data?.map((newData, index) => (
             <div key={index} className="relative group">
               <Link href={`/detail/${newData.id}?id=${newData.id}`}>
-                <img
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+
+                <Image
                   alt="image"
-                  src={newData.urlToImage}
+                  src={newData.urlToImage || null}
                   className="w-full h-auto rounded-md"
+                  width={500}
+                  height={300}
                 />
 
                 <div className="absolute inset-0 bg-black/50 backdrop-blur-sm flex flex-col justify-end items-center opacity-0 translate-y-full group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">

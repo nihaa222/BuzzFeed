@@ -1,4 +1,5 @@
 import getAllNews from "@/lib/getAllNews";
+import Image from "next/image";
 import Link from "next/link";
 
 interface TrendingProps {
@@ -35,12 +36,15 @@ const TrendingClient: React.FC<TrendingProps> = async ({ apis }) => {
           <div key={index} className="relative group">
             {/* Image */}
             <Link href={`/news/${newData.id}`}>
-              <img
-                alt="image"
-                src={newData.urlToImage}
-                className="w-full h-auto rounded-md"
-              />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
 
+              <Image
+                alt="image"
+                src={newData.urlToImage} // Ensure newData.urlToImage is a valid URL string
+                className="w-full h-auto rounded-md"
+                width={500} // You must specify width and height for Next.js Image component
+                height={300} // You can adjust the values to match your image aspect ratio
+              />
               {/* Hover Overlay */}
               <div className="absolute inset-0 bg-black/50 backdrop-blur-sm flex flex-col justify-end items-center opacity-0 translate-y-full group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
                 <div className="text-white p-4">
