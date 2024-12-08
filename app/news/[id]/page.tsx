@@ -18,7 +18,7 @@ interface Article {
 }
 
 const NewsPage: React.FC<NewsPageProps> = async ({ params }) => {
-  const { id } = await params;
+  const { id } = params;
   const getAllData = await getAllNews();
   const selectedData = getAllData?.filter(
     (item: Article) => item.id === parseInt(id)
