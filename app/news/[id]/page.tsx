@@ -20,10 +20,10 @@ interface Article {
 const NewsPage: React.FC<NewsPageProps> = async ({ params }) => {
   const { id } = await params;
   const getAllData = await getAllNews();
-  const selectedData = getAllData.filter(
+  const selectedData = getAllData?.filter(
     (item: Article) => item.id === parseInt(id)
   );
-  const finalData = selectedData[0];
+  const finalData = selectedData && selectedData[0];
   // console.log(selectedData);
   return (
     <div className="mt-8">

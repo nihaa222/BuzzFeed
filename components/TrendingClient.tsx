@@ -18,7 +18,7 @@ interface Article {
 
 const TrendingClient: React.FC<TrendingProps> = async ({ apis }) => {
   // const [data, setData] = useState<Article[]>([]);
-  const data: Article[] = await getAllNews();
+  const data = await getAllNews();
   // const [loading, setLoading] = useState<boolean>(true); // Add loading state
   // console.log(data);
 
@@ -32,7 +32,7 @@ const TrendingClient: React.FC<TrendingProps> = async ({ apis }) => {
       ) : ( */}
 
       <div className="grid md:grid-cols-2 grid-cols-1 xl:grid-cols-4 gap-10">
-        {data.map((newData, index) => (
+        {data?.map((newData, index) => (
           <div key={index} className="relative group">
             {/* Image */}
             <Link href={`/news/${newData.id}`}>
