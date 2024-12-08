@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import { useParams } from "next/navigation"; // No need for useSearchParams or useRouter in this case
+import { useParams } from "next/navigation";
 
 interface Article {
   description: string;
@@ -16,10 +16,14 @@ interface Article {
 
 const DetailsPage: React.FC = () => {
   // Correctly handle id to always be a string
-  const { id } = useParams();
-  const idAsString = Array.isArray(id) ? id[0] : id; // Ensure `id` is a string
+  const { id } = useParams<{ id: string }>();
+  console.log(id);
 
   const [data, setData] = useState<Article[]>([]);
+  const finalData =
+    id && !isNaN(Number(id))
+      ? data.find((item: Article) => item.id === parseInt(id))
+      : undefined;
 
   useEffect(() => {
     const storedData = localStorage.getItem("searchResults");
@@ -34,9 +38,6 @@ const DetailsPage: React.FC = () => {
   }, []);
 
   // Find the article matching the `id`
-  const finalData = idAsString
-    ? data.find((item: Article) => item.id === parseInt(idAsString))
-    : null;
 
   return (
     <div className="mt-8">
