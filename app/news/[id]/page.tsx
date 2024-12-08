@@ -4,6 +4,7 @@ import getAllNews from "@/lib/getAllNews";
 import Image from "next/image";
 import React from "react";
 
+// Define Article type
 interface Article {
   description: string;
   content: string;
@@ -15,13 +16,15 @@ interface Article {
   url: string;
 }
 
+// Correctly type NewsPageProps to include dynamic params
 interface NewsPageProps {
   params: {
-    id: string;
+    id: string; // `id` comes from the dynamic route
   };
 }
 
 const NewsPage: React.FC<NewsPageProps> = async ({ params }) => {
+  // Get the `id` from params
   const { id } = params;
 
   // Fetch all news data (server-side)
@@ -30,6 +33,7 @@ const NewsPage: React.FC<NewsPageProps> = async ({ params }) => {
     (item: Article) => item.id === parseInt(id)
   );
 
+  // Handle case where no article is found
   if (!selectedData) {
     return <div>No article found.</div>;
   }
