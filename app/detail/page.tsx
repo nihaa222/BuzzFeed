@@ -13,7 +13,8 @@ interface Article {
 function Page() {
   const [modifiedTerm, setModifiedTerm] = useState<string>("");
   const [data, setData] = useState<Article[]>([]);
-  // console.log("data", data);
+
+  console.log("data", data);
 
   // Helper function to capitalize the first letter of a string
   function firstCapital(string: string) {
@@ -53,7 +54,7 @@ function Page() {
         <div className=" p-5 pt-10 grid md:grid-cols-2 grid-cols-1 xl:grid-cols-4 gap-10">
           {data?.map((newData, index) => (
             <div key={index} className="relative group">
-              <Link href={`/news/${newData.id}`}>
+              <Link href={`/detail/${newData.id}?id=${newData.id}`}>
                 <img
                   alt="image"
                   src={newData.urlToImage}
