@@ -53,8 +53,6 @@ const DetailsPage: React.FC<DetailsPageProps> = ({ params }) => {
         Source: {finalData?.source.name}
       </p>
       <div className="flex justify-center p-3">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-
         <Image
           className="w-full rounded-md md:w-2/3 xl:w-1/3 h-64"
           src={finalData?.urlToImage || "/path/to/placeholder-image.jpg"} // Fallback to placeholder if the image URL is invalid

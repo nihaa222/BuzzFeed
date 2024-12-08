@@ -56,8 +56,6 @@ function Page() {
           {data?.map((newData, index) => (
             <div key={index} className="relative group">
               <Link href={`/detail/${newData.id}?id=${newData.id}`}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-
                 <Image
                   alt="image"
                   src={newData.urlToImage || null}

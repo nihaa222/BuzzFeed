@@ -36,8 +36,6 @@ const TrendingClient: React.FC<TrendingProps> = async ({ apis }) => {
           <div key={index} className="relative group">
             {/* Image */}
             <Link href={`/news/${newData.id}`}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-
               <Image
                 alt="image"
                 src={newData.urlToImage} // Ensure newData.urlToImage is a valid URL string
