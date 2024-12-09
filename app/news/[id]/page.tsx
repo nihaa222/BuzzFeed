@@ -1,7 +1,5 @@
 import getAllNews from "@/lib/getAllNews";
 import Image from "next/image";
-import { Metadata } from "next";
-import { FC } from "react";
 
 // Define Article type
 interface Article {
@@ -15,17 +13,10 @@ interface Article {
   url: string;
 }
 
-// Define the params type for the dynamic route
-interface NewsPageParams {
-  id: string;
-}
-
 const NewsPage = async ({ params }) => {
-  // Server Component (Data fetching happens directly inside the component)
-
-  const { id } = await params; // Get the id from params
+  const { id } = await params;
   console.log("PARMSSSS", id);
-  // Fetch all news data (server-side)
+
   const getAllData = await getAllNews();
 
   // Find the article by id
