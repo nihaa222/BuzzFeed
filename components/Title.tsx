@@ -10,6 +10,7 @@ import pinkball from "@/public/pink ball.png";
 import Search from "./Search";
 import Link from "next/link";
 import { Dancing_Script } from "next/font/google";
+
 export const dancing_script = Dancing_Script({
   subsets: ["latin"],
   weight: "700",
@@ -24,6 +25,11 @@ const Title: React.FC = () => {
       setIsMenuOpen(JSON.parse(savedMenuState));
     }
   }, []);
+
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, []);
+
   const toggleIcon = () => {
     setIsMenuOpen((prev) => {
       const newState = !prev;
@@ -38,25 +44,27 @@ const Title: React.FC = () => {
     } else {
       document.body.style.overflow = "auto";
     }
-  }),
-    [isMenuOpen];
+  }, [isMenuOpen]);
 
   return (
     <>
-      <div className="relative   ">
+      <div className="relative">
+        {/* Overlay */}
         {isMenuOpen && (
-          <div className="absolute top-0 z-20 left-0 h-screen w-full bg-black bg-opacity-20 backdrop-blur-[2px] rounded-lg"></div>
+          <div className="absolute top-0 z-10 left-0 h-screen w-full bg-black bg-opacity-20 backdrop-blur-[2px] rounded-lg"></div>
         )}
-        <div className="relative z-50 flex justify-between items-center gap-3 mt-2 bg-white p-3 ">
+
+        <div className="relative z-20 flex justify-between items-center gap-3 mt-2 bg-white p-3">
           <div className="flex items-center gap-3">
             <motion.div
               whileTap={{ scale: 1.5 }}
-              className="md:hidden  relative  "
+              className="md:hidden relative z-30" // Ensure it's above the overlay
               onClick={toggleIcon}
             >
-              {isMenuOpen ? <GiCrossedBones /> : <RiMenu2Line />}
+              <RiMenu2Line />
             </motion.div>
-            <div className="flex items-center gap-12  ">
+
+            <div className="flex items-center gap-12">
               <Link href="/">
                 <p
                   className={`${dancing_script.className} font-bold text-2xl shadow-sm backdrop-blur-sm bg-pink-600 rounded-2xl p-2 bg-opacity-5`}
@@ -66,20 +74,20 @@ const Title: React.FC = () => {
               </Link>
 
               {!isMenuOpen && (
-                <div className="font-semi-bold hidden md:block mt-1  cursor-pointer  ">
+                <div className="font-semi-bold hidden md:block mt-1 cursor-pointer">
                   <ul className="flex gap-6 text-[16px]">
                     <Link href="/">
-                      {" "}
-                      <li className=" hover:text-pink-300">Home</li>
+                      <li className="hover:text-pink-300">Home</li>
                     </Link>
-                    <Link href={"/about"}>
-                      <li className=" hover:text-pink-300">About</li>
+                    <Link href="/about">
+                      <li className="hover:text-pink-300">About</li>
                     </Link>
                   </ul>
                 </div>
               )}
             </div>
           </div>
+
           <div className="flex gap-2 items-center">
             <motion.div
               animate={{ y: [0, -10, 10, 0] }}
@@ -97,25 +105,27 @@ const Title: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Slide-in Menu */}
       {isMenuOpen && (
         <motion.div
-          initial={{ x: "-100px" }}
+          initial={{ x: "-100%" }}
           animate={{ x: "0" }}
           transition={{
-            type: "spring", // Use spring physics for the bounce
-            stiffness: 500, // Controls the stiffness (higher is less bouncy)
-            damping: 25, // Controls how quickly it slows down (higher is less bouncy)
-            duration: 2, // Optional: total duration, but spring is based on stiffness and damping
+            type: "spring",
+            stiffness: 500,
+            damping: 25,
+            duration: 2,
           }}
-          className=" absolute z-50 w-full"
+          className="absolute z-50 w-full"
         >
-          <div className="font-bold p-6  border-2 bg-white   shadow-xl cursor-pointer  ">
+          <div className="font-bold p-6 border-2 bg-white shadow-xl cursor-pointer">
             <ul className="flex flex-col gap-2">
-              <Link href={"/"}>
-                <li className=" hover:text-pink-300">Home</li>
+              <Link href="/">
+                <li className="hover:text-pink-300">Home</li>
               </Link>
-              <Link href={"/about"}>
-                <li className=" hover:text-pink-300">About</li>
+              <Link href="/about">
+                <li className="hover:text-pink-300">About</li>
               </Link>
             </ul>
           </div>
