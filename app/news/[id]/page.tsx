@@ -13,9 +13,12 @@ interface Article {
   id: number;
   url: string;
 }
+interface NewsPageProps {
+  params: { id: string };
+}
 
 // Server Component (Data fetching happens directly inside the component)
-const NewsPage = async ({ params }: { params: { id: string } }) => {
+const NewsPage = async ({ params }: NewsPageProps) => {
   console.log(params);
   const { id } = await params; // Get the `id` from params
 
