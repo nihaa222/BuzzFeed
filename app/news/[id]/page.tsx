@@ -14,12 +14,12 @@ interface Article {
 }
 
 // Define the params type
-interface NewsPageParams {
+interface PageParams {
   params: { id: string };
 }
 
-const NewsPage = async ({ params }: NewsPageParams) => {
-  const { id } = params;
+const NewsPage = async ({ params }: PageParams) => {
+  const { id } = await params;
   console.log("PARMSSSS", id);
 
   const getAllData = await getAllNews();
