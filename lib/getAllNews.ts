@@ -28,43 +28,39 @@ async function isImageValid(url: string): Promise<boolean> {
 
 // Function to fetch and filter the news
 export default async function getAllNews() {
-  try {
-    const res = await fetch(
-      `https://newsapi.org/v2/top-headlines?country=us&apiKey=${api}`
-    );
+  const res = await fetch(
+    `https://newsapi.org/v2/top-headlines?country=us&apiKey=${api}`
+  );
 
-    const newData = await res.json();
+  const newData = await res.json();
 
-    // Filter articles to exclude those with invalid image URLs
-    const selectedData = await Promise.all(
-      newData.articles.map(async (data: Article) => {
-        const isValidImage =
-          isValidImageUrl(data.urlToImage) &&
-          (await isImageValid(data.urlToImage));
+  // Filter articles to exclude those with invalid image URLs
+  const selectedData = await Promise.all(
+    newData.articles.map(async (data: Article) => {
+      const isValidImage =
+        isValidImageUrl(data.urlToImage) &&
+        (await isImageValid(data.urlToImage));
 
-        if (
-          data.description !== null &&
-          data.description !== "[Removed]" &&
-          data.content !== null &&
-          data.content !== "" &&
-          isValidImage
-        ) {
-          return data;
-        }
-        return null; // Return null for invalid articles
-      })
-    );
+      if (
+        data.description !== null &&
+        data.description !== "[Removed]" &&
+        data.content !== null &&
+        data.content !== "" &&
+        isValidImage
+      ) {
+        return data;
+      }
+      return null; // Return null for invalid articles
+    })
+  );
 
-    // Remove null values from the array and assign IDs
-    const updatedData = selectedData
-      .filter((item) => item !== null)
-      .map((item, index) => {
-        item.id = index + 1;
-        return item;
-      });
+  // Remove null values from the array and assign IDs
+  const updatedData = selectedData
+    .filter((item) => item !== null)
+    .map((item, index) => {
+      item.id = index + 1;
+      return item;
+    });
 
-    return updatedData;
-  } catch (error) {
-    console.error("Error fetching data:", error);
-  }
+  return updatedData;
 }

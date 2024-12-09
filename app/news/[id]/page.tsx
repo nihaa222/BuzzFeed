@@ -16,7 +16,8 @@ interface Article {
 
 // Server Component (Data fetching happens directly inside the component)
 const NewsPage = async ({ params }: { params: { id: string } }) => {
-  const { id } = params; // Get the `id` from params
+  console.log(params);
+  const { id } = await params; // Get the `id` from params
 
   // Fetch all news data (server-side)
   const getAllData = await getAllNews();
