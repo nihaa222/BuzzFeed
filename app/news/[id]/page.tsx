@@ -23,8 +23,8 @@ interface NewsPageParams {
 const NewsPage = async ({ params }: { params: { id: string } }) => {
   // Server Component (Data fetching happens directly inside the component)
 
-  const { id } = params; // Get the id from params
-
+  const { id } = await params; // Get the id from params
+  console.log("PARMSSSS", id);
   // Fetch all news data (server-side)
   const getAllData = await getAllNews();
 
