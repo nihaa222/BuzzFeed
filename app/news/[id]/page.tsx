@@ -1,6 +1,7 @@
 import getAllNews from "@/lib/getAllNews";
 import Image from "next/image";
-import React from "react";
+import { Metadata } from "next";
+import { ComponentType } from "react";
 
 // Define Article type
 interface Article {
@@ -16,11 +17,16 @@ interface Article {
 
 // Define the params type for the dynamic route
 interface NewsPageParams {
-  id: string; // Next.js route params are typically strings
+  id: string;
 }
 
+// Define the props type for the page component
+type NewsPageProps = {
+  params: NewsPageParams;
+};
+
 // Server Component (Data fetching happens directly inside the component)
-const NewsPage = async ({ params }: { params: NewsPageParams }) => {
+const NewsPage: ComponentType<NewsPageProps> = async ({ params }) => {
   console.log(params);
   const { id } = params; // Get the `id` from params
 
@@ -48,10 +54,10 @@ const NewsPage = async ({ params }: { params: NewsPageParams }) => {
       <div className="flex justify-center p-3">
         <Image
           className="w-full rounded-md md:w-2/3 xl:w-1/3 h-64"
-          src={selectedData?.urlToImage || "/path/to/placeholder-image.jpg"} // Fallback to placeholder if the image URL is invalid
-          alt={selectedData?.title || "Image not available"} // Use title or a default alt text
-          width={500} // Define the width for the image
-          height={300} // Define the height for the image
+          src={selectedData?.urlToImage || "/path/to/placeholder-image.jpg"}
+          alt={selectedData?.title || "Image not available"}
+          width={500}
+          height={300}
         />
       </div>
       <p className="text-start w-full md:w-2/3 xl:w-1/3 mx-auto">
@@ -68,5 +74,29 @@ const NewsPage = async ({ params }: { params: NewsPageParams }) => {
     </div>
   );
 };
+
+// Metadata generation function
+export async function generateMetadata({
+  params,
+}: {
+  params: NewsPageParams;
+}): Promise<Metadata> {
+  const { id } = params;
+
+  // Fetch all news data
+  const getAllData = await getAllNews();
+
+  // Find the specific article
+  const selectedData = getAllData?.find(
+    (item: Article) => item.id === parseInt(id)
+  );
+
+  return {
+    title: selectedData ? selectedData.title : "News Article",
+    description: selectedData
+      ? selectedData.description
+      : "News Article Details",
+  };
+}
 
 export default NewsPage;
