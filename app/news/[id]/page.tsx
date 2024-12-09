@@ -24,7 +24,7 @@ interface NewsPageParams {
 const NewsPage: FC<{ params: NewsPageParams }> = async ({ params }) => {
   console.log(params);
   const { id } = params; // Get the id from params
-
+  //y
   // Fetch all news data (server-side)
   const getAllData = await getAllNews();
   console.log(getAllData);
