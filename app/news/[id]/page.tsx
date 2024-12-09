@@ -15,7 +15,9 @@ interface Article {
 
 // Define the params type
 interface PageParams {
-  params: { id: string };
+  params: {
+    id: string[]; // Assuming slug is an array of strings
+  };
 }
 
 const NewsPage = async ({ params }: PageParams) => {
