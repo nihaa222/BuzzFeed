@@ -23,7 +23,7 @@ interface NewsPageProps {
   };
 }
 
-const NewsPage: React.FC<NewsPageProps> = async ({ params }) => {
+const NewsPage = async ({ params }: NewsPageProps) => {
   // Get the `id` from params
   const { id } = params;
 
