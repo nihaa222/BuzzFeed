@@ -1,7 +1,8 @@
+"use client";
+
 import getAllNews from "@/lib/getAllNews";
 import Image from "next/image";
-import { Metadata } from "next";
-import { FC } from "react";
+import { FC, use } from "react"; // Import React.use
 
 // Define Article type
 interface Article {
@@ -21,14 +22,14 @@ interface NewsPageParams {
 }
 
 // Server Component (Data fetching happens directly inside the component)
-const NewsPage: FC<{ params: NewsPageParams }> = async ({ params }) => {
-  console.log(params);
-  const { id } = params; // Get the id from params
-  //y
-  // Fetch all news data (server-side)
-  const getAllData = await getAllNews();
-  console.log(getAllData);
+const NewsPage: FC<{ params: Promise<NewsPageParams> }> = ({ params }) => {
+  // Unwrap params using React.use
+  const { id } = use(params);
 
+  // Fetch all news data (server-side)
+  const getAllData = use(getAllNews());
+
+  // Find the selected article by ID
   const selectedData = getAllData?.find(
     (item: Article) => item.id === parseInt(id)
   );
@@ -69,29 +70,5 @@ const NewsPage: FC<{ params: NewsPageParams }> = async ({ params }) => {
     </div>
   );
 };
-
-// Metadata generation function
-export async function generateMetadata({
-  params,
-}: {
-  params: NewsPageParams;
-}): Promise<Metadata> {
-  const { id } = params;
-
-  // Fetch all news data
-  const getAllData = await getAllNews();
-
-  // Find the specific article
-  const selectedData = getAllData?.find(
-    (item: Article) => item.id === parseInt(id)
-  );
-
-  return {
-    title: selectedData ? selectedData.title : "News Article",
-    description: selectedData
-      ? selectedData.description
-      : "News Article Details",
-  };
-}
 
 export default NewsPage;
