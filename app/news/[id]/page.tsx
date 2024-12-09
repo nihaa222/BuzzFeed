@@ -1,8 +1,7 @@
-"use client";
-
 import getAllNews from "@/lib/getAllNews";
 import Image from "next/image";
-import { FC, use } from "react"; // Import React.use
+import { Metadata } from "next";
+import { FC } from "react";
 
 // Define Article type
 interface Article {
@@ -22,14 +21,19 @@ interface NewsPageParams {
 }
 
 // Server Component (Data fetching happens directly inside the component)
-const NewsPage: FC<{ params: Promise<NewsPageParams> }> = ({ params }) => {
-  // Unwrap params using React.use
-  const { id } = use(params);
+const NewsPage: FC<{ params: Promise<NewsPageParams> }> = async ({
+  params,
+}) => {
+  // Await the Promise to resolve the params
+  const resolvedParams = await params;
+  console.log("resolved params:", resolvedParams);
+
+  const { id } = resolvedParams; // Get the id from resolved params
 
   // Fetch all news data (server-side)
-  const getAllData = use(getAllNews());
+  const getAllData = await getAllNews();
 
-  // Find the selected article by ID
+  // Find the article by id
   const selectedData = getAllData?.find(
     (item: Article) => item.id === parseInt(id)
   );
@@ -50,8 +54,8 @@ const NewsPage: FC<{ params: Promise<NewsPageParams> }> = ({ params }) => {
       <div className="flex justify-center p-3">
         <Image
           className="w-full rounded-md md:w-2/3 xl:w-1/3 h-64"
-          src={selectedData?.urlToImage || "/path/to/placeholder-image.jpg"}
-          alt={selectedData?.title || "Image not available"}
+          src={selectedData.urlToImage || "/path/to/placeholder-image.jpg"}
+          alt={selectedData.title || "Image not available"}
           width={500}
           height={300}
         />
@@ -70,5 +74,32 @@ const NewsPage: FC<{ params: Promise<NewsPageParams> }> = ({ params }) => {
     </div>
   );
 };
+
+// Metadata generation function
+export async function generateMetadata({
+  params,
+}: {
+  params: NewsPageParams;
+}): Promise<Metadata> {
+  // Await the Promise to resolve the params
+  const resolvedParams = await params;
+
+  const { id } = resolvedParams; // Get the id from resolved params
+
+  // Fetch all news data
+  const getAllData = await getAllNews();
+
+  // Find the specific article
+  const selectedData = getAllData?.find(
+    (item: Article) => item.id === parseInt(id)
+  );
+
+  return {
+    title: selectedData ? selectedData.title : "News Article",
+    description: selectedData
+      ? selectedData.description
+      : "News Article Details",
+  };
+}
 
 export default NewsPage;

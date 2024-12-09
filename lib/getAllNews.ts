@@ -3,7 +3,7 @@ const api = "0cd77f140b1c4accb8832493e5c794be";
 interface Article {
   description: string;
   content: string;
-  author: number;
+  author: string;
   urlToImage: string;
   source: { name: string };
   title: string;
@@ -11,58 +11,65 @@ interface Article {
   url: string;
 }
 
+// Validate if a URL points to an image
 function isValidImageUrl(url: string): boolean {
   return /\.(jpg|jpeg|png|gif|bmp|webp)$/i.test(url);
 }
 
+// Check if the image URL is accessible
 async function isImageValid(url: string): Promise<boolean> {
   try {
-    const res = await fetch(url, { method: "HEAD" }); // Use HEAD request to avoid downloading the entire image
+    const res = await fetch(url, { method: "HEAD" });
     const contentType = res.headers.get("Content-Type");
-    // Check if the Content-Type header is an image type (e.g., image/jpeg, image/png)
-    return contentType ? contentType.startsWith("image/") : false;
+    return res.ok && contentType?.startsWith("image/");
   } catch (error) {
-    console.error("Error fetching image:", error);
+    console.error("Error validating image:", error);
     return false;
   }
 }
 
-// Function to fetch and filter the news
+// Fetch and filter news articles
 export default async function getAllNews(): Promise<Article[]> {
-  const res = await fetch(
-    `https://newsapi.org/v2/top-headlines?country=us&apiKey=${api}`
-  );
+  try {
+    const res = await fetch(
+      `https://newsapi.org/v2/top-headlines?country=us&apiKey=${api}`
+    );
 
-  const newData = await res.json();
+    if (!res.ok) {
+      throw new Error(`HTTP error! Status: ${res.status}`);
+    }
 
-  // Filter articles to exclude those with invalid image URLs
-  const selectedData = await Promise.all(
-    newData.articles.map(async (data: Article) => {
-      const isValidImage =
-        data.urlToImage &&
-        isValidImageUrl(data.urlToImage) &&
-        (await isImageValid(data.urlToImage));
+    const newData = await res.json();
 
-      if (
-        data.description !== null &&
-        data.description !== "[Removed]" &&
-        data.content !== null &&
-        data.content !== "" &&
-        isValidImage
-      ) {
-        return data;
-      }
-      return null; // Return null for invalid articles
-    })
-  );
+    // Filter articles
+    const filteredArticles = await Promise.all(
+      newData.articles.map(async (article: Article) => {
+        const isValidImage =
+          article.urlToImage &&
+          isValidImageUrl(article.urlToImage) &&
+          (await isImageValid(article.urlToImage));
 
-  // Remove null values from the array and assign IDs
-  const updatedData = selectedData
-    .filter((item): item is Article => item !== null)
-    .map((item, index) => ({
-      ...item,
-      id: index + 1,
-    }));
+        if (
+          article.description &&
+          article.description !== "[Removed]" &&
+          article.content &&
+          isValidImage
+        ) {
+          return article;
+        }
+        return null;
+      })
+    );
 
-  return updatedData;
+    // Remove null entries and assign unique IDs
+    return filteredArticles
+      .filter((article): article is Article => article !== null)
+      .map((article, index) => ({
+        ...article,
+        id: index + 1,
+      }));
+  } catch (error) {
+    console.error("Error fetching news:", error);
+    return []; // Return an empty array in case of failure
+  }
 }
