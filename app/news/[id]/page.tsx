@@ -17,14 +17,9 @@ interface Article {
 }
 
 // Correctly type NewsPageProps to include dynamic params
-interface NewsPageProps {
-  params: {
-    id: string; // `id` comes from the dynamic route
-  };
-}
 
 // Server Component (Data fetching happens directly inside the component)
-const NewsPage = async ({ params }: NewsPageProps) => {
+const NewsPage = async ({ params }) => {
   // Get the `id` from params
   const { id } = params;
 
