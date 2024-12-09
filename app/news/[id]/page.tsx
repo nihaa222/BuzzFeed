@@ -20,6 +20,7 @@ const NewsPage = async ({ params }: { params: { id: string } }) => {
 
   // Fetch all news data (server-side)
   const getAllData = await getAllNews();
+  console.log(getAllData);
   const selectedData = getAllData?.find(
     (item: Article) => item.id === parseInt(id)
   );
