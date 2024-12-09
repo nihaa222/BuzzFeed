@@ -20,7 +20,7 @@ interface NewsPageParams {
   id: string;
 }
 
-const NewsPage = async ({ params }: { params: { id: string } }) => {
+const NewsPage = async ({ params }) => {
   // Server Component (Data fetching happens directly inside the component)
 
   const { id } = await params; // Get the id from params
