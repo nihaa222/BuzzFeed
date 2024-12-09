@@ -23,6 +23,7 @@ interface NewsPageProps {
   };
 }
 
+// Server Component (Data fetching happens directly inside the component)
 const NewsPage = async ({ params }: NewsPageProps) => {
   // Get the `id` from params
   const { id } = params;
