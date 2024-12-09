@@ -1,5 +1,3 @@
-// app/news/[id]/page.tsx
-
 import getAllNews from "@/lib/getAllNews";
 import Image from "next/image";
 import React from "react";
@@ -16,12 +14,9 @@ interface Article {
   url: string;
 }
 
-// Correctly type NewsPageProps to include dynamic params
-
 // Server Component (Data fetching happens directly inside the component)
-const NewsPage = async ({ params }) => {
-  // Get the `id` from params
-  const { id } = params;
+const NewsPage = async ({ params }: { params: { id: string } }) => {
+  const { id } = params; // Get the `id` from params
 
   // Fetch all news data (server-side)
   const getAllData = await getAllNews();

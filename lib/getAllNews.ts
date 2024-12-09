@@ -19,7 +19,7 @@ async function isImageValid(url: string): Promise<boolean> {
     const res = await fetch(url, { method: "HEAD" }); // Use HEAD request to avoid downloading the entire image
     const contentType = res.headers.get("Content-Type");
     // Check if the Content-Type header is an image type (e.g., image/jpeg, image/png)
-    return contentType && contentType.startsWith("image/");
+    return contentType ? contentType.startsWith("image/") : false;
   } catch (error) {
     console.error("Error fetching image:", error);
     return false;
