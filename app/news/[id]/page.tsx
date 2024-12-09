@@ -14,14 +14,20 @@ interface Article {
   url: string;
 }
 
+// Define the params type for the dynamic route
+interface NewsPageParams {
+  id: string; // Next.js route params are typically strings
+}
+
 // Server Component (Data fetching happens directly inside the component)
-const NewsPage = async ({ params }) => {
+const NewsPage = async ({ params }: { params: NewsPageParams }) => {
   console.log(params);
   const { id } = params; // Get the `id` from params
 
   // Fetch all news data (server-side)
   const getAllData = await getAllNews();
   console.log(getAllData);
+
   const selectedData = getAllData?.find(
     (item: Article) => item.id === parseInt(id)
   );
