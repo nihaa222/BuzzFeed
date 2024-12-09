@@ -1,7 +1,7 @@
 import getAllNews from "@/lib/getAllNews";
 import Image from "next/image";
 
-// Define Article type
+// Define the Article type
 interface Article {
   description: string;
   content: string;
@@ -13,8 +13,13 @@ interface Article {
   url: string;
 }
 
-const NewsPage = async ({ params }) => {
-  const { id } = await params;
+// Define the params type
+interface NewsPageParams {
+  params: { id: string };
+}
+
+const NewsPage = async ({ params }: NewsPageParams) => {
+  const { id } = params;
   console.log("PARMSSSS", id);
 
   const getAllData = await getAllNews();
