@@ -8,6 +8,7 @@ interface Article {
   source: { name: string };
   title: string;
   id: number;
+  url: string;
 }
 
 function isValidImageUrl(url: string): boolean {
@@ -27,7 +28,7 @@ async function isImageValid(url: string): Promise<boolean> {
 }
 
 // Function to fetch and filter the news
-export default async function getAllNews() {
+export default async function getAllNews(): Promise<Article[]> {
   const res = await fetch(
     `https://newsapi.org/v2/top-headlines?country=us&apiKey=${api}`
   );
@@ -38,6 +39,7 @@ export default async function getAllNews() {
   const selectedData = await Promise.all(
     newData.articles.map(async (data: Article) => {
       const isValidImage =
+        data.urlToImage &&
         isValidImageUrl(data.urlToImage) &&
         (await isImageValid(data.urlToImage));
 
@@ -56,11 +58,11 @@ export default async function getAllNews() {
 
   // Remove null values from the array and assign IDs
   const updatedData = selectedData
-    .filter((item) => item !== null)
-    .map((item, index) => {
-      item.id = index + 1;
-      return item;
-    });
+    .filter((item): item is Article => item !== null)
+    .map((item, index) => ({
+      ...item,
+      id: index + 1,
+    }));
 
   return updatedData;
 }

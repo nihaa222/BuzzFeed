@@ -1,7 +1,7 @@
 import getAllNews from "@/lib/getAllNews";
 import Image from "next/image";
 import { Metadata } from "next";
-import { ComponentType } from "react";
+import { FC } from "react";
 
 // Define Article type
 interface Article {
@@ -20,15 +20,10 @@ interface NewsPageParams {
   id: string;
 }
 
-// Define the props type for the page component
-type NewsPageProps = {
-  params: NewsPageParams;
-};
-
 // Server Component (Data fetching happens directly inside the component)
-const NewsPage: ComponentType<NewsPageProps> = async ({ params }) => {
+const NewsPage: FC<{ params: NewsPageParams }> = async ({ params }) => {
   console.log(params);
-  const { id } = params; // Get the `id` from params
+  const { id } = params; // Get the id from params
 
   // Fetch all news data (server-side)
   const getAllData = await getAllNews();
