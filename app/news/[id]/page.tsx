@@ -20,23 +20,16 @@ interface NewsPageParams {
   id: string;
 }
 
-// Server Component (Data fetching happens directly inside the component)
-const NewsPage: FC<{ params: Promise<NewsPageParams> }> = async ({
-  params,
-}) => {
-  // Await the Promise to resolve the params
-  const resolvedParams = await params;
-  console.log("resolved params:", resolvedParams);
+const NewsPage = async ({ params }: { params: { id: string } }) => {
+  // Server Component (Data fetching happens directly inside the component)
 
-  const { id } = resolvedParams; // Get the id from resolved params
+  const { id } = params; // Get the id from params
 
   // Fetch all news data (server-side)
   const getAllData = await getAllNews();
 
   // Find the article by id
-  const selectedData = getAllData?.find(
-    (item: Article) => item.id === parseInt(id)
-  );
+  const selectedData = getAllData?.find((item) => item.id === parseInt(id));
 
   // Handle case where no article is found
   if (!selectedData) {
@@ -74,32 +67,5 @@ const NewsPage: FC<{ params: Promise<NewsPageParams> }> = async ({
     </div>
   );
 };
-
-// Metadata generation function
-export async function generateMetadata({
-  params,
-}: {
-  params: NewsPageParams;
-}): Promise<Metadata> {
-  // Await the Promise to resolve the params
-  const resolvedParams = await params;
-
-  const { id } = resolvedParams; // Get the id from resolved params
-
-  // Fetch all news data
-  const getAllData = await getAllNews();
-
-  // Find the specific article
-  const selectedData = getAllData?.find(
-    (item: Article) => item.id === parseInt(id)
-  );
-
-  return {
-    title: selectedData ? selectedData.title : "News Article",
-    description: selectedData
-      ? selectedData.description
-      : "News Article Details",
-  };
-}
 
 export default NewsPage;

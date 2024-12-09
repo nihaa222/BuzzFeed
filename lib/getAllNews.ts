@@ -21,7 +21,7 @@ async function isImageValid(url: string): Promise<boolean> {
   try {
     const res = await fetch(url, { method: "HEAD" });
     const contentType = res.headers.get("Content-Type");
-    return res.ok && contentType?.startsWith("image/");
+    return (res.ok && contentType?.startsWith("image/")) || false;
   } catch (error) {
     console.error("Error validating image:", error);
     return false;
