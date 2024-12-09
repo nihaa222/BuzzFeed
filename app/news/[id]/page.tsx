@@ -21,7 +21,7 @@ interface PageParams {
 }
 
 const NewsPage = async ({ params }: PageParams) => {
-  const { id } = await params;
+  const { id } = params;
   //is
   console.log("PARMSSSS", id);
 
