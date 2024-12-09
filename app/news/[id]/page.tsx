@@ -1,5 +1,9 @@
+"use client";
+
 import getAllNews from "@/lib/getAllNews";
 import Image from "next/image";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 // Define the Article type
 interface Article {
@@ -13,28 +17,27 @@ interface Article {
   url: string;
 }
 
-// Define the params type
-interface PageParams {
-  params: {
-    id: string; // Assuming slug is an array of stringsjkj
-  };
-}
+const NewsPage = () => {
+  const { id } = useParams<{ id: string }>(); // Dynamically get the id from the URL
+  const [selectedData, setSelectedData] = useState<Article | null>(null);
 
-const NewsPage = async ({ params }: PageParams) => {
-  const { id } = params;
-  //is
-  console.log("PARMSSSS", id);
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!id) return; // Ensure id exists
+      const allData = await getAllNews();
+      const article = allData?.find((item) => item.id === parseInt(id));
+      setSelectedData(article || null); // Set the found article or null
+    };
 
-  const getAllData = await getAllNews();
+    fetchData();
+  }, [id]);
 
-  // Find the article by id
-  const selectedData = getAllData?.find((item) => item.id === parseInt(id));
-
-  // Handle case where no article is found
+  // Handle loading state
   if (!selectedData) {
-    return <div>No article found.</div>;
+    return <div>Loading...</div>;
   }
 
+  // Render the article data
   return (
     <div className="mt-8">
       <p className="text-center text-xl font-bold text-md md:leading-8 xl:leading-loose tracking-wide mx-auto w-full px-3 sm:p-0 sm:w-2/3">

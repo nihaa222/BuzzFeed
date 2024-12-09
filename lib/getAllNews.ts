@@ -17,16 +17,16 @@ function isValidImageUrl(url: string): boolean {
 }
 
 // Check if the image URL is accessible
-// async function isImageValid(url: string): Promise<boolean> {
-//   try {
-//     const res = await fetch(url, { method: "HEAD" });
-//     const contentType = res.headers.get("Content-Type");
-//     return (res.ok && contentType?.startsWith("image/")) || false;
-//   } catch (error) {
-//     console.error("Error validating image:", error);
-//     return false;
-//   }
-// }
+async function isImageValid(url: string): Promise<boolean> {
+  try {
+    const res = await fetch(url, { method: "HEAD" });
+    const contentType = res.headers.get("Content-Type");
+    return (res.ok && contentType?.startsWith("image/")) || false;
+  } catch (error) {
+    console.error("Error validating image:", error);
+    return false;
+  }
+}
 
 // Fetch and filter news articles
 export default async function getAllNews(): Promise<Article[]> {
@@ -45,9 +45,9 @@ export default async function getAllNews(): Promise<Article[]> {
     const filteredArticles = await Promise.all(
       newData.articles.map(async (article: Article) => {
         const isValidImage =
-          article.urlToImage && isValidImageUrl(article.urlToImage);
-        // &&
-        // (await isImageValid(article.urlToImage));
+          article.urlToImage &&
+          isValidImageUrl(article.urlToImage) &&
+          (await isImageValid(article.urlToImage));
 
         if (
           article.description &&

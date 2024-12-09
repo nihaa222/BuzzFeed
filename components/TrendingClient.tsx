@@ -35,7 +35,7 @@ const TrendingClient: React.FC<TrendingProps> = async ({ apis }) => {
         {data?.map((newData, index) => (
           <div key={index} className="relative group">
             {/* Image */}
-            <Link href={`/news/${newData.id}`}>
+            <Link href={`/news/${newData.id}?id=${newData.id}`}>
               <Image
                 alt="image"
                 src={newData.urlToImage} // Ensure newData.urlToImage is a valid URL string
