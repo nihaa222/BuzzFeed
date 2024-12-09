@@ -20,6 +20,7 @@ interface PageParams {
 
 const NewsPage = async ({ params }: PageParams) => {
   const { id } = await params;
+  //i
   console.log("PARMSSSS", id);
 
   const getAllData = await getAllNews();
