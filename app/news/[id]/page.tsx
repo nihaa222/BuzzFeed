@@ -54,7 +54,7 @@ const NewsPage = async ({ params }: { params: { id: string } }) => {
       </p>
       <p className="text-center text-[14px] underline text-pink-400">
         <a target="_blank" rel="noopener noreferrer" href={selectedData.url}>
-          Read More Here{" "}
+          Read More Here
         </a>
       </p>
     </div>
