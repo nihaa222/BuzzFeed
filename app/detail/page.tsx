@@ -2,6 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+
 interface Article {
   description: string;
   content: string;
@@ -11,6 +12,7 @@ interface Article {
   title: string;
   id: number;
 }
+
 function Page() {
   const [modifiedTerm, setModifiedTerm] = useState<string>("");
   const [data, setData] = useState<Article[]>([]);
@@ -37,7 +39,12 @@ function Page() {
       if (newData) {
         try {
           const parsedData = JSON.parse(newData); // Parse JSON string to an array
-          setData(parsedData);
+          // Filter out articles with empty 'urlToImage'
+          const filteredData = parsedData.filter(
+            (article: Article) =>
+              article.urlToImage && article.urlToImage.trim() !== ""
+          );
+          setData(filteredData);
         } catch (error) {
           console.error("Error parsing searchResults:", error);
         }
@@ -54,7 +61,7 @@ function Page() {
       {data.length !== 0 ? (
         <div className=" p-5 pt-10 grid md:grid-cols-2 grid-cols-1 xl:grid-cols-4 gap-10">
           {data?.map((newData, index) => (
-            <div key={index} className="relative group">
+            <div key={index} className="relative group h-[300px]">
               <Link href={`/detail/${newData.id}?id=${newData.id}`}>
                 <Image
                   alt="image"

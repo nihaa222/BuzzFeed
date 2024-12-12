@@ -29,7 +29,7 @@ async function isImageValid(url: string): Promise<boolean> {
 }
 
 // Fetch and filter news articles
-export default async function getAllNews(): Promise<Article[]> {
+export default async function getAllNews() {
   try {
     const res = await fetch(
       `https://newsapi.org/v2/top-headlines?country=us&apiKey=${api}`
