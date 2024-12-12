@@ -12,7 +12,7 @@ const arvo = Arvo({
 });
 
 export default function Home() {
-  const api = "0cd77f140b1c4accb8832493e5c794be";
+  const api = "952ceea87ef04dd79e759af24c71e9b5";
   return (
     <>
       <div className="px-10 sm:px-20 md:px-0 md:w-1/2  xl:w-1/3 mx-auto mt-10">
