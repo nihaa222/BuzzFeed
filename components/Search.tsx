@@ -28,7 +28,7 @@ const Search: React.FC<ApiSearch> = ({ api }) => {
   const fetchData = async (term: string) => {
     if (term) {
       const res = await fetch(
-        `https://newsapi.org/v2/everything?q=${term}&sortBy=popularity&apiKey=${api}`
+        `https://newsapi.org/v2/everything?q=${term}&from=2024-11-12&sortBy=popularity&apiKey=${api}`
       );
       if (res.status === 429) {
         const retryAfter = res.headers.get("Retry-After");
