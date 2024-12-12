@@ -1,4 +1,4 @@
-const api = "952ceea87ef04dd79e759af24c71e9b5";
+const api = "2f1216b800594f4caf90425d3e08a036";
 
 interface Article {
   description: string;
